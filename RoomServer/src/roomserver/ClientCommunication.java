@@ -88,6 +88,8 @@ public class ClientCommunication {
                     }
                 }
                 
+                
+                
                 // Now that a successful name has been chosen, add the
                 // socket's print writer to the set of all writers so
                 // this client can receive broadcast messages.
@@ -103,11 +105,20 @@ public class ClientCommunication {
                         return;
                     }
                     // handle input
-                    
+                    if(line.startsWith("PING")) {
+                        out.println("PING");
+                    } else if(line.startsWith("IPREQUEST")) {
+                        // Requesting IP for
+                    }
                 }
             } catch(IOException e) {
                 println(e.toString());
             } finally {
+                // This client is going down!  Remove its name and its print
+                // writer from the sets, and close its socket.
+                if(name != null) {
+                    names.remove(name);
+                }
                 out.close();
                 try {
                     in.close();
@@ -115,7 +126,7 @@ public class ClientCommunication {
                 } catch(IOException e) {}
             }
         }
-
+ 
         @Override
         public String toString() {
             return name;
