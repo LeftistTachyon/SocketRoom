@@ -1,10 +1,12 @@
-# Client - Server Communication Protocol  
-### About  
-This is a document which keeps track of the communication protocol between the client and the server.  
+# Communication Protocol  
+## About  
+This is a document which keeps track of the communication protocol.    
 The _command name_ or _header_ refers to the prefix of the command.  
 The _body_ of the command refers to the information, if any, which immeadiately follow the header.  
   
-## Command table  
+## Client - Server Command table  
+This protocol table is for communication between the client and the server.  
+
 |Command Name/Header|Direction       |Command Body         |Response                                |
 |:-----------------:|:--------------:|:-------------------:|:--------------------------------------:|
 |`PING`             |Either          |(none)               |`PING`                                  |
@@ -14,3 +16,12 @@ The _body_ of the command refers to the information, if any, which immeadiately 
 |`CHALLENGE`        |Client to Server|`[String requested]` |None, but sends a challenge request     |
 |`CHALLENGE`        |Server to Client|`[String challenger]`|Whether the client accepts the challenge|
 |`CONNECT`          |Server to Client|`[String IP]`        |The IP that the client should connect to|
+
+## Client - Client Command table  
+This protocal table is for communication between clients in-game.  
+
+|Command Name/Header|Command Body       |Response                                                   |
+|:-----------------:|:-----------------:|:---------------------------------------------------------:|
+|`PING`             |(none)             |`PING`                                                     |
+|`NB`               |`[String bagOrder]`|None, but adds a new bag to the matrix.                    |
+|`LOCK`             |`[int x] [int y]`  |None, but locks the piece in place in the given coordinates|
