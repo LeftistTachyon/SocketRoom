@@ -105,6 +105,7 @@ public class ServerCommunication {
                 temp = 0;
                 // init stuff
             } else if(line.startsWith("NEWCLIENT")) {
+                // add a client to the pool
                 Scanner reader = new Scanner(line.substring(10));
                 boolean added = ALL_CLIENTS.add(new Client(reader.next()));
                 if(!added) System.err.println("WTF a client connected "

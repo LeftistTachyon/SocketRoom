@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.HashMap;
 import java.util.HashSet;
 
 /**
@@ -24,6 +25,16 @@ public class ClientCommunication {
      */
     private static HashSet<String> names = new HashSet<>();
     
+    /**
+     * A map of all names of clients paired to their respective Handlers.
+     */
+    private static HashMap<String, Handler> handlers = new HashMap<>();
+    
+    /**
+     * A handler thread class.  Handlers are spawned from the listening
+     * loop and are responsible for a dealing with a single client
+     * and broadcasting its messages.
+     */
     public static class Handler extends Thread implements Comparable<Handler> {
         /**
          * This client's name
@@ -83,6 +94,7 @@ public class ClientCommunication {
                     synchronized(names) {
                         if(!names.contains(name)) {
                             names.add(name);
+                            handlers.put(name, this);
                             break;
                         }
                     }
@@ -108,7 +120,8 @@ public class ClientCommunication {
                     if(line.startsWith("PING")) {
                         out.println("PING");
                     } else if(line.startsWith("IPREQUEST")) {
-                        // Requesting IP for
+                        // Requesting IP for matchmaking
+                        
                     }
                 }
             } catch(IOException e) {
