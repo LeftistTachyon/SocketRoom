@@ -20,8 +20,9 @@ This protocol table is for communication between the client and the server.
 ## Client - Client Command table  
 This protocal table is for communication between clients in-game.  
 
-|Command Name/Header|Command Body       |Response                                                   |
-|:-----------------:|:-----------------:|:---------------------------------------------------------:|
-|`PING`             |(none)             |`PING`                                                     |
-|`NB`               |`[String bagOrder]`|None, but adds a new bag to the matrix.                    |
-|`LOCK`             |`[int x] [int y]`  |None, but locks the piece in place in the given coordinates|
+|Command Name/Header|Command Body                     |Response                                                   |
+|:-----------------:|:-------------------------------:|:---------------------------------------------------------:|
+|`PING`             |(none)                           |`PING`                                                     |
+|`NB`               |`[String bagOrder]`              |None, but adds a new bag to the matrix.                    |
+|`LOCK`             |`[int x] [int y]`                |None, but locks the piece in place in the given coordinates|
+|`M`                |`[String move]` L,R,RR,RL,H,SD,HD|None, but executes the action.                             |
