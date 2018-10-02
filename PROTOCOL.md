@@ -15,9 +15,8 @@ This protocol table is for communication between the client and the server.
 |`NEWCLIENT`        |Server to Client|`[String name]`      |(none)                                  |
 |`CHALLENGE`        |Client to Server|`[String requested]` |None, but sends a challenge request     |
 |`CHALLENGE`        |Server to Client|`[String challenger]`|Whether the client accepts the challenge|
-|`CONNECT`          |Server to Client|`[String IP]`        |The IP that the client should connect to|
 
-## Client - Client Command table  
+## In-Game Command table  
 This protocol table is for communication between clients in-game (for Tetris).  
 
 |Command Name/Header|Command Body                     |Response                                                   |
