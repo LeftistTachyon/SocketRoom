@@ -15,7 +15,8 @@ This protocol table is for communication between the client and the server.
 |`NEWCLIENT`        |Server to Client|`[String name]`                         |(none)                                  |
 |`CHALLENGE_C`      |Client to Server|`[String requested]`                    |None, but sends a challenge request     |
 |`CHALLENGE_R`      |Client to Server|`[boolean accepted] [String challenger]`|None, but pairs the two if they accept  |
-|`CHALLENGE`        |Server to Client|`[String challenger]`                   |Whether the client accepts the challenge|
+|`CHALLENGE_C`      |Server to Client|`[String challenger]`                   |Whether the client accepts the challenge|
+|`CHALLENGE_R`      |Server to Client|`[boolean accepted]`                    |(none)                                  |
 
 ## In-Game Command table  
 This protocol table is for communication between clients in-game (for Tetris).  
