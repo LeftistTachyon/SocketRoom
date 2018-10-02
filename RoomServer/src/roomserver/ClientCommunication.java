@@ -19,13 +19,6 @@ public class ClientCommunication {
     public static final int PORT = 9001;
     
     /**
-     * The set of all names of clients in the chat room.  Maintained
-     * so that we can check that new clients are not registering name
-     * already in use.
-     */
-    private static HashSet<String> names = new HashSet<>();
-    
-    /**
      * A map of all names of clients paired to their respective Handlers.
      */
     private static HashMap<String, Handler> handlers = new HashMap<>();
@@ -57,12 +50,18 @@ public class ClientCommunication {
         private PrintWriter out;
         
         /**
+         * Whether this client is in a game
+         */
+        private boolean inGame;
+        
+        /**
          * Constructs a handler thread, squirreling away the socket.
          * All the interesting work is done in the run method.
          * @param socket the socket that receives info from the client
          */
         public Handler(Socket socket) {
             this.socket = socket;
+            inGame = false;
         }
 
         /**
@@ -91,16 +90,13 @@ public class ClientCommunication {
                     // notify(name, true);
                     if(name == null) return;
                     if("".equals(name) || "null".equals(name)) continue;
-                    synchronized(names) {
-                        if(!names.contains(name)) {
-                            names.add(name);
+                    synchronized(handlers) {
+                        if(!handlers.containsKey(name)) {
                             handlers.put(name, this);
                             break;
                         }
                     }
                 }
-                
-                
                 
                 // Now that a successful name has been chosen, add the
                 // socket's print writer to the set of all writers so
@@ -126,6 +122,8 @@ public class ClientCommunication {
                             handlers.get(toChallenge).
                                     out.println("CHALLENGE" + name);
                         }
+                    } else if(line.startsWith("CONNECT")) {
+                        
                     }
                 }
             } catch(IOException e) {
@@ -133,9 +131,6 @@ public class ClientCommunication {
             } finally {
                 // This client is going down!  Remove its name and its print
                 // writer from the sets, and close its socket.
-                if(name != null) {
-                    names.remove(name);
-                }
                 if(handlers != null) {
                     handlers.remove(name);
                 }

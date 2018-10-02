@@ -123,8 +123,6 @@ public class ServerCommunication {
                 } else {
                     out.println("false");
                 }
-            } else if(line.startsWith("CONNECT")) {
-                // Time to connect for a match!
             }
         }
     }
