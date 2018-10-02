@@ -10,9 +10,9 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.HashSet;
-import java.util.Objects;
-import java.util.Scanner;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -27,27 +27,42 @@ public class ServerCommunication {
     
     /**
      * The socket connection out of this
+     * Should be private
      */
-    private PrintWriter out;
+    protected PrintWriter out;
+    
+    /**
+     * Whether this client is in a game
+     */
+    private boolean inGame;
     
     /**
      * A {@code Set} of all clients
      */
-    private static final Set<Client> ALL_CLIENTS = new HashSet<>();
+    private static final Set<String> ALL_CLIENTS = new HashSet<>();
     
     /**
      * Standard constructor.
-     * @throws IOException if something goes wrong
      */
-    public ServerCommunication() throws IOException {
-        run();
+    public ServerCommunication() {
+        inGame = false;
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    run_();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }.start();
     }
     
     /**
      * Connects to the server then enters the processing loop
      * @throws IOException if something goes wrong
      */
-    private void run() throws IOException {
+    private void run_() throws IOException {
         // Make connection and initialize streams
         String serverAddress;
         Socket socket = null;
@@ -76,7 +91,7 @@ public class ServerCommunication {
         // Process all messages from server, according to the protocol.
         
         int temp = 0;
-        String _name = null;
+        String _name;
         while(true) {
             // Reading input from the server
             String line = null;
@@ -93,35 +108,46 @@ public class ServerCommunication {
                 return;
             }
             
-            if(line.startsWith("PING")) {
+            if(line.equals("PING")) {
                 out.println("PING");
-            } else if(line.startsWith("SUBMITNAME")) {
-                // submit your name, duh
-                _name = getName(temp++ == 0);
-                out.println(_name);
-                System.out.println(_name);
-            } else if(line.startsWith("NAMEACCEPTED")) {
-                // the server has accepted your name
-                temp = 0;
-                // init stuff
             } else if(line.startsWith("NEWCLIENT")) {
+                System.out.println("new client: " + line.substring(9));
                 // add a client to the pool
-                Scanner reader = new Scanner(line.substring(10));
-                boolean added = ALL_CLIENTS.add(new Client(reader.next()));
+                boolean added = ALL_CLIENTS.add(line.substring(9));
                 if(!added) System.err.println("WTF a client connected "
                         + "with a duplicate name");
-            } else if(line.startsWith("CHALLENGE")) {
-                // I'm being challenged!
-                String challenger = line.substring(9);
-                int choice = JOptionPane.showConfirmDialog(null, 
-                        challenger + " has challenged you!\nDo you accpet?", 
-                        "Challenge", JOptionPane.YES_NO_OPTION, 
-                        JOptionPane.INFORMATION_MESSAGE);
-                // whether I accept the challenge
-                if(choice == JOptionPane.YES_OPTION) {
-                    out.println("true");
+            } else {
+                if(inGame) {
+                    if(line.equals("EXIT")) {
+                        System.err.println("The other person has left "
+                                + "the match.");
+                        inGame = false;
+                    } else if(line.startsWith("NM")) {
+                        System.out.printf("%-100s", line.substring(2));
+                    }
                 } else {
-                    out.println("false");
+                    if(line.startsWith("SUBMITNAME")) {
+                        // submit your name, duh
+                        _name = getName(temp++ == 0);
+                        out.println(_name);
+                        System.out.println(_name);
+                    } else if(line.startsWith("NAMEACCEPTED")) {
+                        // the server has accepted your name
+                        temp = 0;
+                        // init stuff
+                    } else if(line.startsWith("CHALLENGE_C")) {
+                        // I'm being challenged!
+                        String challenger = line.substring(11);
+                        int choice = JOptionPane.showConfirmDialog(null,
+                                challenger + " has challenged you!\nDo you accpet?",
+                                "Challenge", JOptionPane.YES_NO_OPTION, 
+                                JOptionPane.INFORMATION_MESSAGE);
+                        // whether I accept the challenge
+                        boolean accepted = choice == JOptionPane.YES_OPTION;
+                        out.println("CHALLENGE_R" + accepted + " " + challenger);
+                    } else if(line.startsWith("CHALLENGE_R")) {
+                        inGame = Boolean.parseBoolean(line.substring(11));
+                    }
                 }
             }
         }
@@ -156,42 +182,19 @@ public class ServerCommunication {
     }
     
     /**
-     * A class that represents a client.
+     * Prints all connected clients.
      */
-    public static class Client implements Comparable<Client> {
-        /**
-         * This client's name
-         */
-        private final String name;
-
-        /**
-         * Creates a new client with a given name
-         * @param name the name of this client
-         */
-        public Client(String name) {
-            this.name = name;
+    public void printAllClients() {
+        for(String name : ALL_CLIENTS) {
+            System.out.println(name);
         }
-
-        @Override
-        public int compareTo(Client c) {
-            return name.compareToIgnoreCase(c.name);
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if(obj instanceof Client) {
-                Client cc = (Client) obj;
-                return name.equalsIgnoreCase(cc.name);
-            } else return super.equals(obj);
-        }
-
-        @Override
-        public int hashCode() { 
-            // NOTE: when adding another field, be sure to refresh/remake the 
-            // hashcode function
-            int hash = 5;
-            hash = 31 * hash + Objects.hashCode(this.name);
-            return hash;
-        }
+    }
+    
+    /**
+     * Exits the current game.
+     */
+    public void exitGame() {
+        out.println("EXIT");
+        inGame = false;
     }
 }

@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Scanner;
 
 /**
  * A class that handles communication with clients
@@ -40,6 +41,11 @@ public class ClientCommunication {
         public final Socket socket;
         
         /**
+         * The opponent's handler
+         */
+        private Handler opponent;
+        
+        /**
          * Messaging to here
          */
         private BufferedReader in;
@@ -62,6 +68,7 @@ public class ClientCommunication {
         public Handler(Socket socket) {
             this.socket = socket;
             inGame = false;
+            opponent = null;
         }
 
         /**
@@ -92,7 +99,14 @@ public class ClientCommunication {
                     if("".equals(name) || "null".equals(name)) continue;
                     synchronized(handlers) {
                         if(!handlers.containsKey(name)) {
+                            HashSet<String> copy = new HashSet<>(handlers.keySet());
+                            for(Handler h : handlers.values()) {
+                                h.out.println("NEWCLIENT" + name);
+                            }
                             handlers.put(name, this);
+                            for(String s : copy) {
+                                out.println("NEWCLIENT" + s);
+                            }
                             break;
                         }
                     }
@@ -115,15 +129,43 @@ public class ClientCommunication {
                     // handle input
                     if(line.startsWith("PING")) {
                         out.println("PING");
-                    } else if(line.startsWith("CHALLENGE")) {
-                        // Challenging for a match
-                        String toChallenge = line.substring(9);
-                        if(handlers.containsKey(toChallenge)) {
-                            handlers.get(toChallenge).
-                                    out.println("CHALLENGE" + name);
+                    } else if(inGame) {
+                        if(line.startsWith("EXIT")) {
+                            inGame = false;
+                            if(opponent != null) {
+                                opponent.out.println("EXIT");
+                                opponent.inGame = false;
+
+                                opponent = null;
+                            }
+                        } else opponent.out.println(line);
+                    } else {
+                        if(line.startsWith("CHALLENGE_C")) {
+                            // Challenging for a match
+                            String toChallenge = line.substring(11);
+                            if(handlers.containsKey(toChallenge)) {
+                                handlers.get(toChallenge).
+                                        out.println(line);
+                            } else System.err.println("Opponent not found");
+                        } else if(line.startsWith("CHALLENGE_R")) {
+                            // Challenge response: accept or reject
+                            Scanner temp = new Scanner(line.substring(11));
+                            
+                            // Accepted!
+                            String other = temp.next();
+                            if(handlers.containsKey(other)) {
+                                Handler otherH = handlers.get(other);
+                                if(temp.nextBoolean()) {
+                                    opponent = otherH;
+                                    inGame = true;
+                                    opponent.out.println("CHALLENGE_Rtrue");
+                                    opponent.opponent = this;
+                                    opponent.inGame = true;
+                                } else {
+                                    otherH.out.println("CHALLENGE_Rfalse");
+                                }
+                            } else System.err.println("Opponent not found");
                         }
-                    } else if(line.startsWith("CONNECT")) {
-                        
                     }
                 }
             } catch(IOException e) {
@@ -131,6 +173,10 @@ public class ClientCommunication {
             } finally {
                 // This client is going down!  Remove its name and its print
                 // writer from the sets, and close its socket.
+                if(opponent != null) {
+                    opponent.out.println("EXIT");
+                    opponent.inGame = false;
+                }
                 if(handlers != null) {
                     handlers.remove(name);
                 }
