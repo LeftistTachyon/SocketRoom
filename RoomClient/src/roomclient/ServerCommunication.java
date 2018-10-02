@@ -110,6 +110,21 @@ public class ServerCommunication {
                 boolean added = ALL_CLIENTS.add(new Client(reader.next()));
                 if(!added) System.err.println("WTF a client connected "
                         + "with a duplicate name");
+            } else if(line.startsWith("CHALLENGE")) {
+                // I'm being challenged!
+                String challenger = line.substring(9);
+                int choice = JOptionPane.showConfirmDialog(null, 
+                        challenger + " has challenged you!\nDo you accpet?", 
+                        "Challenge", JOptionPane.YES_NO_OPTION, 
+                        JOptionPane.INFORMATION_MESSAGE);
+                // whether I accept the challenge
+                if(choice == JOptionPane.YES_OPTION) {
+                    out.println("true");
+                } else {
+                    out.println("false");
+                }
+            } else if(line.startsWith("CONNECT")) {
+                // Time to connect for a match!
             }
         }
     }

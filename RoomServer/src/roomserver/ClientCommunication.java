@@ -119,9 +119,13 @@ public class ClientCommunication {
                     // handle input
                     if(line.startsWith("PING")) {
                         out.println("PING");
-                    } else if(line.startsWith("IPREQUEST")) {
-                        // Requesting IP for matchmaking
-                        
+                    } else if(line.startsWith("CHALLENGE")) {
+                        // Challenging for a match
+                        String toChallenge = line.substring(9);
+                        if(handlers.containsKey(toChallenge)) {
+                            handlers.get(toChallenge).
+                                    out.println("CHALLENGE" + name);
+                        }
                     }
                 }
             } catch(IOException e) {
@@ -131,6 +135,9 @@ public class ClientCommunication {
                 // writer from the sets, and close its socket.
                 if(name != null) {
                     names.remove(name);
+                }
+                if(handlers != null) {
+                    handlers.remove(name);
                 }
                 out.close();
                 try {
