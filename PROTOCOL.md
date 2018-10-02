@@ -18,10 +18,18 @@ This protocol table is for communication between the client and the server.
 |`CONNECT`          |Server to Client|`[String IP]`        |The IP that the client should connect to|
 
 ## Client - Client Command table  
-This protocal table is for communication between clients in-game.  
+This protocol table is for communication between clients in-game (for Tetris).  
 
-|Command Name/Header|Command Body       |Response                                                   |
-|:-----------------:|:-----------------:|:---------------------------------------------------------:|
-|`PING`             |(none)             |`PING`                                                     |
-|`NB`               |`[String bagOrder]`|None, but adds a new bag to the matrix.                    |
-|`LOCK`             |`[int x] [int y]`  |None, but locks the piece in place in the given coordinates|
+|Command Name/Header|Command Body                     |Response                                                   |
+|:-----------------:|:-------------------------------:|:---------------------------------------------------------:|
+|`PING`             |(none)                           |`PING`                                                     |
+|`NB`               |`[String bagOrder]`              |None, but adds a new bag to the matrix.                    |
+|`LOCK`             |`[int x] [int y]`                |None, but locks the piece in place in the given coordinates|
+|`M`                |`[String move]` L,R,RR,RL,H,SD,HD|None, but executes the action.                             |
+  
+This protocol table is for communication between clients for chatting.  
+  
+|Command Name/Header|Command Body      |Response                                                 |
+|:-----------------:|:----------------:|:-------------------------------------------------------:|
+|`NM`               |`[String message]`|None, but adds message to chat history                   |
+|`EXIT`             |(none)            |None, but adds to chat history that the other person left|
