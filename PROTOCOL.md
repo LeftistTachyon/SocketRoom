@@ -7,17 +7,17 @@ The _body_ of the command refers to the information, if any, which immeadiately 
 ## Client - Server Command table  
 This protocol table is for communication between the client and the server.  
 
-|Command Name/Header|Direction       |Command Body                            |Response                                |
-|:-----------------:|:--------------:|:--------------------------------------:|:--------------------------------------:|
-|`PING`             |Either          |(none)                                  |`PING`                                  |
-|`SUBMITNAME`       |Server to Client|(none)                                  |The name of the client is sent          |
-|`NAMEACCEPTED`     |Server to Client|(none)                                  |(none)                                  |
-|`NEWCLIENT`        |Server to Client|`[String name]`                         |(none)                                  |
-|`REMOVECLIENT`     |Server to Client|`[String name]`                         |(none)                                  |
-|`CHALLENGE_C`      |Client to Server|`[String requested]`                    |None, but sends a challenge request     |
-|`CHALLENGE_R`      |Client to Server|`[String challenger] [boolean accepted]`|None, but pairs the two if they accept  |
-|`CHALLENGE_C`      |Server to Client|`[String challenger]`                   |Whether the client accepts the challenge|
-|`CHALLENGE_R`      |Server to Client|`[boolean accepted]`                    |(none)                                  |
+|Command Name/Header                |Direction       |Command Body                            |Response                                |
+|:---------------------------------:|:--------------:|:--------------------------------------:|:--------------------------------------:|
+|`PING`                             |Either          |(none)                                  |`PING`                                  |
+|`SUBMITNAME`                       |Server to Client|(none)                                  |The name of the client is sent          |
+|`NAMEACCEPTED`                     |Server to Client|(none)                                  |(none)                                  |
+|`NEWCLIENT`                        |Server to Client|`[String name]`                         |(none)                                  |
+|`REMOVECLIENT`                     |Server to Client|`[String name]`                         |(none)                                  |
+|`CHALLENGE_C` (challenge a client) |Client to Server|`[String requested]`                    |None, but sends a challenge request     |
+|`CHALLENGE_R` (challenge response) |Client to Server|`[String challenger] [boolean accepted]`|None, but pairs the two if they accept  |
+|`CHALLENGE_C` (relaying a challenge)|Server to Client|`[String challenger]`                   |Whether the client accepts the challenge|
+|`CHALLENGE_R` (relaying the reponse)|Server to Client|`[boolean accepted]`                    |(none)                                  |
 
 ## In-Game Command table  
 This protocol table is for communication between clients in-game (for Tetris).  
@@ -25,9 +25,9 @@ This protocol table is for communication between clients in-game (for Tetris).
 |Command Name/Header|Command Body                     |Response                                                   |
 |:-----------------:|:-------------------------------:|:---------------------------------------------------------:|
 |`PING`             |(none)                           |`PING`                                                     |
-|`NB`               |`[String bagOrder]`              |None, but adds a new bag to the matrix.                    |
+|`NB` (new bag)     |`[String bagOrder]`              |None, but adds a new bag to the matrix.                    |
 |`LOCK`             |`[int x] [int y]`                |None, but locks the piece in place in the given coordinates|
-|`M`                |`[String move]` L,R,RR,RL,H,SD,HD|None, but executes the action.                             |
+|`M` (move)         |`[String move]` L,R,RR,RL,H,SD,HD|None, but executes the action.                             |
   
 This protocol table is for communication between clients for chatting.  
   
