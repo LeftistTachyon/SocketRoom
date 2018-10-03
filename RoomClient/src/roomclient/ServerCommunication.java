@@ -144,6 +144,7 @@ public class ServerCommunication {
                                 JOptionPane.INFORMATION_MESSAGE);
                         // whether I accept the challenge
                         boolean accepted = choice == JOptionPane.YES_OPTION;
+                        inGame = accepted;
                         out.println("CHALLENGE_R" + challenger + " " + accepted);
                     } else if(line.startsWith("CHALLENGE_R")) {
                         inGame = Boolean.parseBoolean(line.substring(11));

@@ -141,10 +141,12 @@ public class ClientCommunication {
                     } else if(inGame) {
                         if(line.startsWith("EXIT")) {
                             inGame = false;
+                            busy.remove(this);
                             if(opponent != null) {
                                 opponent.out.println("EXIT");
                                 opponent.inGame = false;
-
+                                busy.remove(opponent);
+                                
                                 opponent = null;
                             }
                         } else opponent.out.println(line);
