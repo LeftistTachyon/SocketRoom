@@ -133,7 +133,7 @@ public class ClientCommunication {
                         return;
                     }
                     
-                    println("inGame: " + inGame + "\tline: \"" + line + "\"");
+                    println("\"" + line + "\"");
                     
                     // handle input
                     if(line.equals("PING")) {
