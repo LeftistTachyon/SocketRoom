@@ -123,7 +123,16 @@ public class ServerCommunication {
                                 + "the match.");
                         inGame = false;
                     } else if(line.startsWith("NM")) {
-                        System.out.printf("%-100s", line.substring(2));
+                        String message = line.substring(2);
+                        while(message.length() > 90) {
+                            System.out.println("          " + message.substring(0, 90));
+                            message = message.substring(90);
+                        }
+                        String spaces = "          ";
+                        for(int i = 0; i < 90 - message.length(); i++) {
+                            spaces += " ";
+                        }
+                        System.out.println(spaces + message);
                     }
                 } else {
                     if(line.startsWith("SUBMITNAME")) {
@@ -139,12 +148,12 @@ public class ServerCommunication {
                         // I'm being challenged!
                         String challenger = line.substring(11);
                         int choice = JOptionPane.showConfirmDialog(null,
-                                challenger + " has challenged you!\nDo you accpet?",
+                                challenger + " has challenged you!\nDo you accept?",
                                 "Challenge", JOptionPane.YES_NO_OPTION, 
                                 JOptionPane.INFORMATION_MESSAGE);
                         // whether I accept the challenge
                         boolean accepted = choice == JOptionPane.YES_OPTION;
-                        out.println("CHALLENGE_R" + accepted + " " + challenger);
+                        out.println("CHALLENGE_R" + challenger + " " + accepted);
                     } else if(line.startsWith("CHALLENGE_R")) {
                         inGame = Boolean.parseBoolean(line.substring(11));
                     }

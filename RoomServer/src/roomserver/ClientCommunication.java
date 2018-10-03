@@ -143,10 +143,13 @@ public class ClientCommunication {
                         if(line.startsWith("CHALLENGE_C")) {
                             // Challenging for a match
                             String toChallenge = line.substring(11);
+                            if(toChallenge.equals(name))
+                                continue;
                             if(handlers.containsKey(toChallenge)) {
                                 handlers.get(toChallenge).
-                                        out.println(line);
-                            } else System.err.println("Opponent not found");
+                                        out.println("CHALLENGE_C" + name);
+                            } else System.err.println("Opponent " + toChallenge 
+                                    + " not found (149)");
                         } else if(line.startsWith("CHALLENGE_R")) {
                             // Challenge response: accept or reject
                             Scanner temp = new Scanner(line.substring(11));
@@ -164,7 +167,8 @@ public class ClientCommunication {
                                 } else {
                                     otherH.out.println("CHALLENGE_Rfalse");
                                 }
-                            } else System.err.println("Opponent not found");
+                            } else System.err.println("Opponent " + other + 
+                                    " not found (168)");
                         }
                     }
                 }
@@ -173,6 +177,9 @@ public class ClientCommunication {
             } finally {
                 // This client is going down!  Remove its name and its print
                 // writer from the sets, and close its socket.
+                for(Handler h : handlers.values()) {
+                    h.out.println("REMOVECLIENT" + name);
+                }
                 if(opponent != null) {
                     opponent.out.println("EXIT");
                     opponent.inGame = false;
