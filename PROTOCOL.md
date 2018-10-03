@@ -31,7 +31,8 @@ This protocol table is for communication between clients in-game (for Tetris).
   
 This protocol table is for communication between clients for chatting.  
   
-|Command Name/Header|Command Body      |Response                                                 |
-|:-----------------:|:----------------:|:-------------------------------------------------------:|
-|`NM`               |`[String message]`|None, but adds message to chat history                   |
-|`EXIT`             |(none)            |None, but adds to chat history that the other person left|
+|Command Name/Header|Command Body                    |Response                                                 |
+|:-----------------:|:------------------------------:|:-------------------------------------------------------:|
+|`NM` (in-game)     |`[String message]`              |None, but adds message to chat history                   |
+|`NM` (lobby chat)  |`[String name] [String message]`|None, but adds message to chat history                   |
+|`EXIT`             |(none)                          |None, but adds to chat history that the other person left|
