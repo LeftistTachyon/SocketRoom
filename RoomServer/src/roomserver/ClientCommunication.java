@@ -138,6 +138,11 @@ public class ClientCommunication {
                     // handle input
                     if(line.equals("PING")) {
                         out.println("PING");
+                    } else if(line.startsWith("NLM")) {
+                        String message = "NLM" + name + ": " + line.substring(3);
+                        for(Handler h : handlers.values()) {
+                            h.out.println(message);
+                        }
                     } else if(inGame) {
                         if(line.startsWith("EXIT")) {
                             inGame = false;

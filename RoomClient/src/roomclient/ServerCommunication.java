@@ -115,6 +115,8 @@ public class ServerCommunication {
                 boolean added = ALL_CLIENTS.add(line.substring(9));
                 if(!added) System.err.println("WTF a client connected "
                         + "with a duplicate name");
+            } else if(line.startsWith("NLM")) {
+                System.err.println(line.substring(3));
             } else {
                 if(inGame) {
                     if(line.equals("EXIT")) {
@@ -123,7 +125,7 @@ public class ServerCommunication {
                         inGame = false;
                     } else if(line.startsWith("NM")) {
                         String message = line.substring(2);
-                        System.err.println(message);
+                        System.err.println("OPPONENT: " + message);
                     }
                 } else {
                     if(line.startsWith("SUBMITNAME")) {
