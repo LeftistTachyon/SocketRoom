@@ -34,5 +34,5 @@ This protocol table is for communication between clients for chatting.
 |Command Name/Header|Command Body                    |Response                                                 |
 |:-----------------:|:------------------------------:|:-------------------------------------------------------:|
 |`NM` (in-game)     |`[String message]`              |None, but adds message to chat history                   |
-|`NM` (lobby chat)  |`[String name] [String message]`|None, but adds message to chat history                   |
+|`NLM` (lobby chat) |`[String name] [String message]`|None, but adds message to chat history                   |
 |`EXIT`             |(none)                          |None, but adds to chat history that the other person left|
