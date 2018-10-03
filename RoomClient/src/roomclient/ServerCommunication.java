@@ -11,8 +11,6 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -107,6 +105,7 @@ public class ServerCommunication {
                 // Welp, looks like the server left
                 return;
             }
+            System.out.println("SERVER: " + line);
             
             if(line.equals("PING")) {
                 out.println("PING");
@@ -124,15 +123,7 @@ public class ServerCommunication {
                         inGame = false;
                     } else if(line.startsWith("NM")) {
                         String message = line.substring(2);
-                        while(message.length() > 90) {
-                            System.out.println("          " + message.substring(0, 90));
-                            message = message.substring(90);
-                        }
-                        String spaces = "          ";
-                        for(int i = 0; i < 90 - message.length(); i++) {
-                            spaces += " ";
-                        }
-                        System.out.println(spaces + message);
+                        System.err.println(message);
                     }
                 } else {
                     if(line.startsWith("SUBMITNAME")) {
@@ -156,6 +147,7 @@ public class ServerCommunication {
                         out.println("CHALLENGE_R" + challenger + " " + accepted);
                     } else if(line.startsWith("CHALLENGE_R")) {
                         inGame = Boolean.parseBoolean(line.substring(11));
+                        System.out.println(inGame);
                     }
                 }
             }

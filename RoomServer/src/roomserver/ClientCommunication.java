@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
 
 /**
  * A class that handles communication with clients
@@ -23,6 +24,11 @@ public class ClientCommunication {
      * A map of all names of clients paired to their respective Handlers.
      */
     private static HashMap<String, Handler> handlers = new HashMap<>();
+    
+    /**
+     * A Set of Handlers which are busy
+     */
+    private static Set<Handler> busy = new HashSet<>();
     
     /**
      * A handler thread class.  Handlers are spawned from the listening
@@ -126,8 +132,11 @@ public class ClientCommunication {
                     if(line == null) {
                         return;
                     }
+                    
+                    println("inGame: " + inGame + "\tline: \"" + line + "\"");
+                    
                     // handle input
-                    if(line.startsWith("PING")) {
+                    if(line.equals("PING")) {
                         out.println("PING");
                     } else if(inGame) {
                         if(line.startsWith("EXIT")) {
@@ -145,6 +154,7 @@ public class ClientCommunication {
                             String toChallenge = line.substring(11);
                             if(toChallenge.equals(name))
                                 continue;
+                            
                             if(handlers.containsKey(toChallenge)) {
                                 handlers.get(toChallenge).
                                         out.println("CHALLENGE_C" + name);
@@ -158,12 +168,16 @@ public class ClientCommunication {
                             String other = temp.next();
                             if(handlers.containsKey(other)) {
                                 Handler otherH = handlers.get(other);
-                                if(temp.nextBoolean()) {
+                                if(temp.nextBoolean() && 
+                                        !busy.contains(otherH)) {
                                     opponent = otherH;
                                     inGame = true;
                                     opponent.out.println("CHALLENGE_Rtrue");
                                     opponent.opponent = this;
                                     opponent.inGame = true;
+                                    
+                                    busy.add(opponent);
+                                    busy.add(this);
                                 } else {
                                     otherH.out.println("CHALLENGE_Rfalse");
                                 }
