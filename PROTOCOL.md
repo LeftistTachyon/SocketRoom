@@ -22,12 +22,12 @@ This protocol table is for communication between the client and the server.
 ## In-Game Command table  
 This protocol table is for communication between clients in-game (for Tetris).  
 
-|Command Name/Header|Command Body                     |Response                                                   |
-|:-----------------:|:-------------------------------:|:---------------------------------------------------------:|
-|`PING`             |(none)                           |`PING`                                                     |
-|`NB` (new bag)     |`[String bagOrder]`              |None, but adds a new bag to the matrix.                    |
-|`LOCK`             |`[int x] [int y]`                |None, but locks the piece in place in the given coordinates|
-|`M` (move)         |`[String move]` L,R,RR,RL,H,SD,HD|None, but executes the action.                             |
+|Command Name/Header|Command Body                           |Response                                                   |
+|:-----------------:|:-------------------------------------:|:---------------------------------------------------------:|
+|`PING`             |(none)                                 |`PING`                                                     |
+|`NB` (new bag)     |`[String bagOrder]`                    |None, but adds a new bag to the matrix.                    |
+|`LOCK`             |`[int x] [int y]`                      |None, but locks the piece in place in the given coordinates|
+|`M` (move)         |`[String move]` L, R, RR, RL, H, SD, HD|None, but executes the action.                             |
   
 This protocol table is for communication between clients for chatting.  
   
