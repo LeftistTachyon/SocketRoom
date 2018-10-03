@@ -13,6 +13,7 @@ This protocol table is for communication between the client and the server.
 |`SUBMITNAME`       |Server to Client|(none)                                  |The name of the client is sent          |
 |`NAMEACCEPTED`     |Server to Client|(none)                                  |(none)                                  |
 |`NEWCLIENT`        |Server to Client|`[String name]`                         |(none)                                  |
+|`REMOVECLIENT`     |Server to Client|`[String name]`                         |(none)                                  |
 |`CHALLENGE_C`      |Client to Server|`[String requested]`                    |None, but sends a challenge request     |
 |`CHALLENGE_R`      |Client to Server|`[boolean accepted] [String challenger]`|None, but pairs the two if they accept  |
 |`CHALLENGE_C`      |Server to Client|`[String challenger]`                   |Whether the client accepts the challenge|
