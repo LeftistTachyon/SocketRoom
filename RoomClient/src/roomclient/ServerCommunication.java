@@ -117,13 +117,19 @@ public class ServerCommunication {
             }
             
             if(line.startsWith("NEWCLIENT")) {
-                System.out.println("new client: " + line.substring(9));
+                String newClient = line.substring(9);
+                System.out.println("new client: " + newClient);
+                lw.addPlayer(newClient);
                 // add a client to the pool
-                boolean added = ALL_CLIENTS.add(line.substring(9));
+                boolean added = ALL_CLIENTS.add(newClient);
                 if(!added) System.err.println("WTF a client connected "
                         + "with a duplicate name");
+            } else if(line.startsWith("REMOVECLIENT")) {
+                String toRemove = line.substring(12);
+                ALL_CLIENTS.remove(toRemove);
+                lw.removePlayer(toRemove);
             } else if(line.startsWith("NLM")) {
-                System.err.println(line.substring(3));
+                lw.addLobbyMessage(line.substring(3));
             } else {
                 if(inGame) {
                     if(line.equals("EXIT")) {
@@ -162,6 +168,14 @@ public class ServerCommunication {
                 }
             }
         }
+    }
+    
+    /**
+     * Sends a message to the lobby chat
+     * @param toSend the message to send
+     */
+    public void sendLobbyMessage(String toSend) {
+        out.println("NLM" + toSend);
     }
     
     /**

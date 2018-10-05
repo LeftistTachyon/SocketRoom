@@ -6,14 +6,18 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
 import javax.swing.GroupLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.LayoutStyle;
+import javax.swing.ListModel;
+import javax.swing.ListSelectionModel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
@@ -48,11 +52,12 @@ public class LobbyWindow extends JFrame {
         infoPanel = new JPanel();
         chatSP = new JScrollPane();
         chatTP = new JTextPane();
-        playerListSP = new JScrollPane();
-        playerListTP = new JTextPane();
         playerLabel = new JLabel();
         chatLabel = new JLabel();
         chatTextField = new JTextField();
+        playerListSP = new javax.swing.JScrollPane();
+        playerList = new javax.swing.JList<>();
+        playerLModel = new DefaultListModel<>();
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("LobbyWindow");
@@ -65,9 +70,6 @@ public class LobbyWindow extends JFrame {
         chatTP.setEditable(false);
         chatSP.setViewportView(chatTP);
 
-        playerListTP.setEditable(false);
-        playerListSP.setViewportView(playerListTP);
-
         playerLabel.setFont(new Font("Segoe UI Semilight", 0, 20)); // NOI18N
         playerLabel.setText("Players");
 
@@ -75,7 +77,12 @@ public class LobbyWindow extends JFrame {
         chatLabel.setText("Lobby Chat");
 
         chatTextField.setFont(new Font("Segoe UI", 0, 11)); // NOI18N
-        chatTextField.addActionListener(this::sendMessage);
+        chatTextField.addActionListener(this::sendLobbyMessage);
+        
+        playerList.setFont(new Font("Segoe UI", 0, 14)); // NOI18N
+        playerList.setModel(playerLModel);
+        playerList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        playerListSP.setViewportView(playerList);
 
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -84,15 +91,15 @@ public class LobbyWindow extends JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(infoPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(infoPanel, GroupLayout.DEFAULT_SIZE, 864, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(playerLabel, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
-                            .addComponent(playerListSP, GroupLayout.Alignment.LEADING))
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                            .addComponent(playerLabel, GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
+                            .addComponent(playerListSP))
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                             .addComponent(chatSP)
-                            .addComponent(chatLabel, GroupLayout.DEFAULT_SIZE, 713, Short.MAX_VALUE)
+                            .addComponent(chatLabel, GroupLayout.DEFAULT_SIZE, 692, Short.MAX_VALUE)
                             .addComponent(chatTextField))))
                 .addContainerGap())
         );
@@ -105,11 +112,11 @@ public class LobbyWindow extends JFrame {
                     .addComponent(chatLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(playerListSP)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(chatSP, GroupLayout.DEFAULT_SIZE, 427, Short.MAX_VALUE)
+                        .addComponent(chatSP, GroupLayout.DEFAULT_SIZE, 522, Short.MAX_VALUE)
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(chatTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(chatTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                    .addComponent(playerListSP))
                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(infoPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -122,10 +129,39 @@ public class LobbyWindow extends JFrame {
      * Invoked when the client hits the ENTER key after typing in the box.
      * @param evt a description of the event
      */
-    private void sendMessage(ActionEvent evt) {                                              
+    private void sendLobbyMessage(ActionEvent evt) {                                              
         String message = chatTextField.getText();
         chatTextField.setText("");
         
+        if(!message.equals("")) toAlert.sendLobbyMessage(message);
+    }
+    
+    /**
+     * Adds a message to the lobby chat
+     * @param message the message to add
+     */
+    public void addLobbyMessage(String message) {
+        chatTP.setText(chatTP.getText() + "\n" + message);
+    }
+    
+    /**
+     * Adds a player to the lobby list
+     * @param name the name of the player
+     */
+    public void addPlayer(String name) {
+        int i;
+        for(i = 0; i < playerLModel.getSize(); i++) {
+            if(name.compareTo(playerLModel.getElementAt(i)) < 0) break;
+        }
+        playerLModel.add(i, name);
+    }
+    
+    /**
+     * Removes a player from the lobby list
+     * @param name the name of the player
+     */
+    public void removePlayer(String name) {
+        playerLModel.removeElement(name);
     }
     
     /**
@@ -170,7 +206,8 @@ public class LobbyWindow extends JFrame {
     private JTextField chatTextField;
     private JPanel infoPanel;
     private JLabel playerLabel;
+    private JList<String> playerList;
     private JScrollPane playerListSP;
-    private JTextPane playerListTP;
+    private DefaultListModel<String> playerLModel;
     //</editor-fold>
 }

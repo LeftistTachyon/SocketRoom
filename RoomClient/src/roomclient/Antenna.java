@@ -23,11 +23,11 @@ public class Antenna extends JFrame {
         infoPanel = new javax.swing.JPanel();
         chatSP = new javax.swing.JScrollPane();
         chatTP = new javax.swing.JTextPane();
-        playerListSP = new javax.swing.JScrollPane();
-        playerListTP = new javax.swing.JTextPane();
         playerLabel = new javax.swing.JLabel();
         chatLabel = new javax.swing.JLabel();
         chatTextField = new javax.swing.JTextField();
+        playerListSP = new javax.swing.JScrollPane();
+        playerList = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Antenna");
@@ -50,9 +50,6 @@ public class Antenna extends JFrame {
         chatTP.setEditable(false);
         chatSP.setViewportView(chatTP);
 
-        playerListTP.setEditable(false);
-        playerListSP.setViewportView(playerListTP);
-
         playerLabel.setFont(new java.awt.Font("Segoe UI Semilight", 0, 20)); // NOI18N
         playerLabel.setText("Players");
 
@@ -66,6 +63,15 @@ public class Antenna extends JFrame {
             }
         });
 
+        playerList.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        playerList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        playerList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        playerListSP.setViewportView(playerList);
+
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -73,15 +79,15 @@ public class Antenna extends JFrame {
             .add(layout.createSequentialGroup()
                 .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(infoPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 885, Short.MAX_VALUE)
+                    .add(infoPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 864, Short.MAX_VALUE)
                     .add(layout.createSequentialGroup()
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
-                            .add(org.jdesktop.layout.GroupLayout.LEADING, playerLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
-                            .add(org.jdesktop.layout.GroupLayout.LEADING, playerListSP))
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                            .add(playerLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
+                            .add(playerListSP))
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(chatSP)
-                            .add(chatLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 713, Short.MAX_VALUE)
+                            .add(chatLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 692, Short.MAX_VALUE)
                             .add(chatTextField))))
                 .addContainerGap())
         );
@@ -94,14 +100,14 @@ public class Antenna extends JFrame {
                     .add(chatLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(playerListSP)
                     .add(layout.createSequentialGroup()
                         .add(chatSP, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 522, Short.MAX_VALUE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(chatTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                        .add(chatTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(playerListSP))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(infoPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -148,8 +154,8 @@ public class Antenna extends JFrame {
     private javax.swing.JTextField chatTextField;
     private javax.swing.JPanel infoPanel;
     private javax.swing.JLabel playerLabel;
+    private javax.swing.JList<String> playerList;
     private javax.swing.JScrollPane playerListSP;
-    private javax.swing.JTextPane playerListTP;
     // End of variables declaration//GEN-END:variables
     
 }
