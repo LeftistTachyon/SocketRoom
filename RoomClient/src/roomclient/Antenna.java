@@ -1,5 +1,10 @@
 package roomclient;
 
+import java.awt.EventQueue;
+import javax.swing.JFrame;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
 public class Antenna extends JFrame {
     
     /** Creates new form Antenna */
@@ -15,65 +20,96 @@ public class Antenna extends JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel3 = new JPanel();
-        jScrollPane1 = new JScrollPane();
-        jTextArea1 = new JTextArea();
-        jScrollPane2 = new JScrollPane();
-        jTextArea2 = new JTextArea();
+        infoPanel = new javax.swing.JPanel();
+        chatSP = new javax.swing.JScrollPane();
+        chatTP = new javax.swing.JTextPane();
+        playerListSP = new javax.swing.JScrollPane();
+        playerListTP = new javax.swing.JTextPane();
+        playerLabel = new javax.swing.JLabel();
+        chatLabel = new javax.swing.JLabel();
+        chatTextField = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Lobby");
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Antenna");
 
-        jPanel3.setBackground(new Color(255, 255, 255));
-        jPanel3.setBorder(BorderFactory.createLineBorder(new Color(130, 135, 144)));
+        infoPanel.setBackground(new java.awt.Color(255, 255, 255));
+        infoPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(130, 135, 144)));
+        infoPanel.setPreferredSize(new java.awt.Dimension(2, 200));
 
-        GroupLayout jPanel3Layout = new GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(GroupLayout.LEADING)
+        org.jdesktop.layout.GroupLayout infoPanelLayout = new org.jdesktop.layout.GroupLayout(infoPanel);
+        infoPanel.setLayout(infoPanelLayout);
+        infoPanelLayout.setHorizontalGroup(
+            infoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(0, 0, Short.MAX_VALUE)
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(GroupLayout.LEADING)
-            .add(0, 148, Short.MAX_VALUE)
+        infoPanelLayout.setVerticalGroup(
+            infoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(0, 198, Short.MAX_VALUE)
         );
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        chatTP.setEditable(false);
+        chatSP.setViewportView(chatTP);
 
-        jTextArea2.setColumns(20);
-        jTextArea2.setRows(5);
-        jScrollPane2.setViewportView(jTextArea2);
+        playerListTP.setEditable(false);
+        playerListSP.setViewportView(playerListTP);
 
-        GroupLayout layout = new GroupLayout(getContentPane());
+        playerLabel.setFont(new java.awt.Font("Segoe UI Semilight", 0, 20)); // NOI18N
+        playerLabel.setText("Players");
+
+        chatLabel.setFont(new java.awt.Font("Segoe UI Semilight", 0, 20)); // NOI18N
+        chatLabel.setText("Lobby Chat");
+
+        chatTextField.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
+        chatTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chatTextFieldActionPerformed(evt);
+            }
+        });
+
+        org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(GroupLayout.LEADING)
+            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
                 .addContainerGap()
-                .add(layout.createParallelGroup(GroupLayout.LEADING)
-                    .add(jPanel3, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(infoPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 885, Short.MAX_VALUE)
                     .add(layout.createSequentialGroup()
-                        .add(jScrollPane1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(LayoutStyle.RELATED)
-                        .add(jScrollPane2, .DEFAULT_SIZE, 713, Short.MAX_VALUE)))
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
+                            .add(org.jdesktop.layout.GroupLayout.LEADING, playerLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
+                            .add(org.jdesktop.layout.GroupLayout.LEADING, playerListSP))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(chatSP)
+                            .add(chatLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 713, Short.MAX_VALUE)
+                            .add(chatTextField))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(GroupLayout.LEADING)
-            .add(GroupLayout.TRAILING, layout.createSequentialGroup()
+            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .add(layout.createParallelGroup(GroupLayout.LEADING)
-                    .add(jScrollPane1, .DEFAULT_SIZE, 487, Short.MAX_VALUE)
-                    .add(jScrollPane2))
-                .addPreferredGap(LayoutStyle.UNRELATED)
-                .add(jPanel3, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                    .add(playerLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(chatLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(playerListSP)
+                    .add(layout.createSequentialGroup()
+                        .add(chatSP, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 522, Short.MAX_VALUE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(chatTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(infoPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void chatTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chatTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_chatTextFieldActionPerformed
     
     /**
      * @param args the command line arguments
@@ -106,11 +142,14 @@ public class Antenna extends JFrame {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private JPanel jPanel3;
-    private JScrollPane jScrollPane1;
-    private JScrollPane jScrollPane2;
-    private JTextArea jTextArea1;
-    private JTextArea jTextArea2;
+    private javax.swing.JLabel chatLabel;
+    private javax.swing.JScrollPane chatSP;
+    private javax.swing.JTextPane chatTP;
+    private javax.swing.JTextField chatTextField;
+    private javax.swing.JPanel infoPanel;
+    private javax.swing.JLabel playerLabel;
+    private javax.swing.JScrollPane playerListSP;
+    private javax.swing.JTextPane playerListTP;
     // End of variables declaration//GEN-END:variables
     
 }
