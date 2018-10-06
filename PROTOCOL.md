@@ -15,7 +15,7 @@ This protocol table is for communication between the client and the server.
 |`NEWCLIENT`                         |Server to Client|`[boolean isNew] [String name]`         |(none)                                  |
 |`REMOVECLIENT`                      |Server to Client|`[String name]`                         |(none)                                  |
 |`BUSY`                              |Server to Client|`[String name]`                         |(none)                                  |
-
+|`FREE`                              |Server to Client|`[String name]`                         |(none)                                   |
 |`CHALLENGE_C` (challenge a client)  |Client to Server|`[String requested]`                    |None, but sends a challenge request     |
 |`CHALLENGE_R` (challenge response)  |Client to Server|`[String challenger] [boolean accepted]`|None, but pairs the two if they accept  |
 |`CHALLENGE_C` (relaying a challenge)|Server to Client|`[String challenger]`                   |Whether the client accepts the challenge|
