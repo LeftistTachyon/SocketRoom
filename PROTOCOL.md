@@ -7,15 +7,15 @@ The _body_ of the command refers to the information, if any, which immeadiately 
 ## Client - Server Command table  
 This protocol table is for communication between the client and the server.  
 
-|Command Name/Header                |Direction       |Command Body                            |Response                                |
-|:---------------------------------:|:--------------:|:--------------------------------------:|:--------------------------------------:|
-|`PING`                             |Either          |(none)                                  |`PING`                                  |
-|`SUBMITNAME`                       |Server to Client|(none)                                  |The name of the client is sent          |
-|`NAMEACCEPTED`                     |Server to Client|(none)                                  |(none)                                  |
-|`NEWCLIENT`                        |Server to Client|`[String name]`                         |(none)                                  |
-|`REMOVECLIENT`                     |Server to Client|`[String name]`                         |(none)                                  |
-|`CHALLENGE_C` (challenge a client) |Client to Server|`[String requested]`                    |None, but sends a challenge request     |
-|`CHALLENGE_R` (challenge response) |Client to Server|`[String challenger] [boolean accepted]`|None, but pairs the two if they accept  |
+|Command Name/Header                 |Direction       |Command Body                            |Response                                |
+|:----------------------------------:|:--------------:|:--------------------------------------:|:--------------------------------------:|
+|`PING`                              |Either          |(none)                                  |`PING`                                  |
+|`SUBMITNAME`                        |Server to Client|(none)                                  |The name of the client is sent          |
+|`NAMEACCEPTED`                      |Server to Client|(none)                                  |(none)                                  |
+|`NEWCLIENT`                         |Server to Client|`[String name] [boolean new]`           |(none)                                  |
+|`REMOVECLIENT`                      |Server to Client|`[String name]`                         |(none)                                  |
+|`CHALLENGE_C` (challenge a client)  |Client to Server|`[String requested]`                    |None, but sends a challenge request     |
+|`CHALLENGE_R` (challenge response)  |Client to Server|`[String challenger] [boolean accepted]`|None, but pairs the two if they accept  |
 |`CHALLENGE_C` (relaying a challenge)|Server to Client|`[String challenger]`                   |Whether the client accepts the challenge|
 |`CHALLENGE_R` (relaying the reponse)|Server to Client|`[boolean accepted]`                    |(none)                                  |
 
