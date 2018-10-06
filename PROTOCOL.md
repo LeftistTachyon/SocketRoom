@@ -12,7 +12,7 @@ This protocol table is for communication between the client and the server.
 |`PING`                              |Either          |(none)                                  |`PING`                                  |
 |`SUBMITNAME`                        |Server to Client|(none)                                  |The name of the client is sent          |
 |`NAMEACCEPTED`                      |Server to Client|(none)                                  |(none)                                  |
-|`NEWCLIENT`                         |Server to Client|`[String name] [boolean new]`           |(none)                                  |
+|`NEWCLIENT`                         |Server to Client|`[boolean isNew] [String name]`         |(none)                                  |
 |`REMOVECLIENT`                      |Server to Client|`[String name]`                         |(none)                                  |
 |`CHALLENGE_C` (challenge a client)  |Client to Server|`[String requested]`                    |None, but sends a challenge request     |
 |`CHALLENGE_R` (challenge response)  |Client to Server|`[String challenger] [boolean accepted]`|None, but pairs the two if they accept  |
