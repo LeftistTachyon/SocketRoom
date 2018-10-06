@@ -42,11 +42,6 @@ public class ServerCommunication {
     private LobbyWindow lw;
     
     /**
-     * A {@code Set} of all clients
-     */
-    private static final Set<String> ALL_CLIENTS = new HashSet<>();
-    
-    /**
      * Standard constructor.
      */
     public ServerCommunication() {
@@ -117,17 +112,21 @@ public class ServerCommunication {
             }
             
             if(line.startsWith("NEWCLIENT")) {
-                String newClient = line.substring(9);
+                // add a client to the pool
+                String[] data = line.substring(9).split(" ");
+                
+                String newClient = data[1];
                 System.out.println("new client: " + newClient);
                 lw.addPlayer(newClient);
-                // add a client to the pool
-                boolean added = ALL_CLIENTS.add(newClient);
-                if(!added) System.err.println("WTF a client connected "
-                        + "with a duplicate name");
+                
+                if(Boolean.parseBoolean(data[0])) {
+                    lw.addLobbyMessage(newClient + " has joined");
+                }
             } else if(line.startsWith("REMOVECLIENT")) {
+                // remove a client from the pool
                 String toRemove = line.substring(12);
-                ALL_CLIENTS.remove(toRemove);
                 lw.removePlayer(toRemove);
+                lw.addLobbyMessage(toRemove + " has left");
             } else if(line.startsWith("NLM")) {
                 lw.addLobbyMessage(line.substring(3));
             } else {
@@ -204,15 +203,6 @@ public class ServerCommunication {
             if(s == null) System.exit(0);
         } while(s.contains(" ") || "".equals(s));
         return s;
-    }
-    
-    /**
-     * Prints all connected clients.
-     */
-    public void printAllClients() {
-        for(String name : ALL_CLIENTS) {
-            System.out.println(name);
-        }
     }
     
     /**

@@ -107,11 +107,11 @@ public class ClientCommunication {
                         if(!handlers.containsKey(name)) {
                             HashSet<String> copy = new HashSet<>(handlers.keySet());
                             for(Handler h : handlers.values()) {
-                                h.out.println("NEWCLIENT" + name);
+                                h.out.println("NEWCLIENTtrue " + name);
                             }
                             handlers.put(name, this);
                             for(String s : copy) {
-                                out.println("NEWCLIENT" + s);
+                                out.println("NEWCLIENTfalse " + s);
                             }
                             break;
                         }
