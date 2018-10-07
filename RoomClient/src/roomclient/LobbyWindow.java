@@ -8,6 +8,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -272,24 +273,30 @@ public class LobbyWindow extends JFrame {
             String selectedPlayer = playerList.getSelectedValue();
             if(selectedPlayer != null) {
                 Graphics2D g2D = (Graphics2D) g;
-                g2D.setStroke(new BasicStroke(2.5f, BasicStroke.CAP_ROUND,
+                g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, 
+                        RenderingHints.VALUE_ANTIALIAS_ON);
+                int cbh = challengeButtonHeight();
+                g2D.setStroke(new BasicStroke(1, BasicStroke.CAP_ROUND,
                         BasicStroke.JOIN_ROUND));
-                g2D.setFont(new Font("Consolas", Font.PLAIN, 15));
-                
+                g2D.setFont(new Font("Consolas", Font.PLAIN, cbh));
                 g2D.setColor(Color.black);
-                g2D.drawString(selectedPlayer, 5, 20);
+                g2D.drawString(selectedPlayer, 5, cbh + 5);
+                
                 boolean isBusy = toAlert.isPlayerBusy(selectedPlayer);
                 if (isBusy) {
                     g2D.setColor(Color.red);
                 } else {
                     g2D.setColor(Color.green);
                 }
-                g2D.fillOval(100, 15, 10, 10);
+                int x = (int) (cbh * 0.55) * selectedPlayer.length();
+                g2D.fillOval(x, cbh, 10, 10);
                 g2D.setColor(Color.black);
-                g2D.drawOval(100, 15, 10, 10);
+                g2D.drawOval(x, cbh, 10, 10);
                 
+                g2D.setStroke(new BasicStroke(2.5f, BasicStroke.CAP_ROUND,
+                        BasicStroke.JOIN_ROUND));
                 int cbx = challengeButtonX(), cby = challengeButtonY(),
-                        cbw = challengeButtonWidth(), cbh = challengeButtonHeight();
+                        cbw = challengeButtonWidth();
                 if (isBusy) {
                     g2D.setColor(Color.lightGray);
                     g2D.fillRect(cbx, cby, cbw, cbh);
@@ -300,8 +307,9 @@ public class LobbyWindow extends JFrame {
                     g2D.setColor(Color.darkGray);
                 }
                 g2D.drawRect(cbx, cby, cbw, cbh);
-                g2D.setFont(new Font("Consolas", Font.PLAIN, cbh - 10));
-                g2D.drawString("Challenge", cbx + 5, cby + cbh - 5);
+                g2D.setFont(new Font("Consolas", Font.PLAIN, 
+                        Math.min(cbh - 10, cbw / 5)));
+                g2D.drawString("CHALLENGE", cbx + 5, cby + cbh - 10);
             }
         }
         
