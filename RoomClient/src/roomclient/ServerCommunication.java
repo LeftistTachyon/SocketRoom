@@ -11,8 +11,7 @@ import java.net.NoRouteToHostException;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
 import javax.swing.JOptionPane;
 
 /**
@@ -42,10 +41,16 @@ public class ServerCommunication {
     private LobbyWindow lw;
     
     /**
+     * The status of all players: (Name, Whether this client is busy)
+     */
+    private HashMap<String, Boolean> status;
+    
+    /**
      * Standard constructor.
      */
     public ServerCommunication() {
         inGame = false;
+        status = new HashMap<>();
         
         lw = LobbyWindow.run(this);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -118,6 +123,7 @@ public class ServerCommunication {
                 String newClient = data[1];
                 System.out.println("new client: " + newClient);
                 lw.addPlayer(newClient);
+                status.put(newClient, false);
                 
                 if(Boolean.parseBoolean(data[0])) {
                     lw.addLobbyMessage(newClient + " has joined");
@@ -126,7 +132,12 @@ public class ServerCommunication {
                 // remove a client from the pool
                 String toRemove = line.substring(12);
                 lw.removePlayer(toRemove);
+                status.remove(toRemove);
                 lw.addLobbyMessage(toRemove + " has left");
+            } else if(line.startsWith("BUSY")) {
+                status.put(line.substring(4), true);
+            } else if(line.startsWith("FREE")) {
+                status.put(line.substring(4), false);
             } else if(line.startsWith("NLM")) {
                 lw.addLobbyMessage(line.substring(3));
             } else {
@@ -175,6 +186,25 @@ public class ServerCommunication {
      */
     public void sendLobbyMessage(String toSend) {
         out.println("NLM" + toSend);
+    }
+    
+    /**
+     * Challenges a player
+     * @param player the player to challenge
+     */
+    public void challenge(String player) {
+        out.println("CHALLENGE_C" + player);
+    }
+    
+    /**
+     * Determines whether a player is busy
+     * @param player the player to request
+     * @return whether the player is busy
+     */
+    public Boolean isPlayerBusy(String player) {
+        if(status.containsKey(player)) {
+            return status.get(player);
+        } else return null;
     }
     
     /**

@@ -70,6 +70,11 @@ public class Antenna extends JFrame {
             public String getElementAt(int i) { return strings[i]; }
         });
         playerList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        playerList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                playerListValueChanged(evt);
+            }
+        });
         playerListSP.setViewportView(playerList);
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
@@ -116,6 +121,10 @@ public class Antenna extends JFrame {
     private void chatTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chatTextFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_chatTextFieldActionPerformed
+
+    private void playerListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_playerListValueChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_playerListValueChanged
     
     /**
      * @param args the command line arguments
