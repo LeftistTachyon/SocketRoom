@@ -25,9 +25,6 @@ public class RoomClientMain {
                 case "END":
                     System.exit(0);
                     break;
-                case "PRINTALL":
-                    sc.printAllClients();
-                    break;
                 default:
                     sc.out.println(line);
                     break;

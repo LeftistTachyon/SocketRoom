@@ -107,11 +107,11 @@ public class ClientCommunication {
                         if(!handlers.containsKey(name)) {
                             HashSet<String> copy = new HashSet<>(handlers.keySet());
                             for(Handler h : handlers.values()) {
-                                h.out.println("NEWCLIENT" + name);
+                                h.out.println("NEWCLIENTtrue " + name);
                             }
                             handlers.put(name, this);
                             for(String s : copy) {
-                                out.println("NEWCLIENT" + s);
+                                out.println("NEWCLIENTfalse " + s);
                             }
                             break;
                         }
@@ -147,10 +147,16 @@ public class ClientCommunication {
                         if(line.startsWith("EXIT")) {
                             inGame = false;
                             busy.remove(this);
+                            for(Handler h : handlers.values()) {
+                                h.out.println("FREE" + name);
+                            }
                             if(opponent != null) {
                                 opponent.out.println("EXIT");
                                 opponent.inGame = false;
                                 busy.remove(opponent);
+                                for(Handler h : handlers.values()) {
+                                    h.out.println("FREE" + opponent.name);
+                                }
                                 
                                 opponent = null;
                             }
@@ -182,6 +188,10 @@ public class ClientCommunication {
                                     opponent.out.println("CHALLENGE_Rtrue");
                                     opponent.opponent = this;
                                     opponent.inGame = true;
+                                    for(Handler h : handlers.values()) {
+                                        h.out.println("BUSY" + name);
+                                        h.out.println("BUSY" + opponent.name);
+                                    }
                                     
                                     busy.add(opponent);
                                     busy.add(this);
@@ -204,6 +214,9 @@ public class ClientCommunication {
                 if(opponent != null) {
                     opponent.out.println("EXIT");
                     opponent.inGame = false;
+                    for(Handler h : handlers.values()) {
+                        h.out.println("FREE" + opponent.name);
+                    }
                 }
                 if(handlers != null) {
                     handlers.remove(name);
