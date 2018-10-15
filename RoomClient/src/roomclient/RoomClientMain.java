@@ -1,6 +1,5 @@
 package roomclient;
 
-import java.io.IOException;
 import java.util.Scanner;
 
 /**
@@ -11,9 +10,8 @@ public class RoomClientMain {
     /**
      * The main method
      * @param args the command line arguments
-     * @throws java.io.IOException if something goes wrong
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         ServerCommunication sc = new ServerCommunication();
         Scanner input = new Scanner(System.in);
         while(true) {
